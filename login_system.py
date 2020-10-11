@@ -1,10 +1,4 @@
-"""
-This is a Login System designed by Ayotomiwa Adekunle.
-It is capable of creating accounts and storing the data on a file on the local device.
-To login the username and password are read from the file.
-It works well but is not perfect, there may be one or two bugs here and there.
-"""
-
+#Created by Ayotomiwa Adekunle
 
 import tkinter as tk
 
