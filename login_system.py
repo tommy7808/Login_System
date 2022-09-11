@@ -33,18 +33,18 @@ class App(Tk):
         frame.tkraise()
 
     # Register function
-    def register(self, cont, username, password):
+    def register(self, username, password, uname_field, pass_field):
         # Get username and password from fields
-        self.username = user_str.get()
-        self.password = passw_str.get()
+        self.username = username.get()
+        self.password = password.get()
 
         with open("Account_info.txt", "a") as file:
             if utils.validate_register(self.username, self.password):
                 file.write(f'{self.username},{self.password}\n')
 
                 # Clear fields
-                username1.delete(0, "end")
-                password1.delete(0, "end")
+                uname_field.delete(0, "end")
+                pass_field.delete(0, "end")
 
                 # Show Successful Registration Frame
                 self.show_frame(SucReg)
@@ -67,8 +67,8 @@ class App(Tk):
 
                 invalid.mainloop()
 
-    # Login functionn
-    def login(self, cont, username1, password1):
+    # Login function
+    def login(self, username1, password1):
         self.username1 = user_str1.get()
         self.password1 = passw_str1.get()
         success = 0
@@ -144,8 +144,8 @@ class PageOne(Frame):
         password = Entry(self, show="*", textvariable=passw_str1)
         password.grid(column=1, row=2)
 
-        button3 = Button(self, text="Login", command=lambda: controller.login(
-            SucLog, user_str1, passw_str1))
+        button3 = Button(
+            self, text="Login", command=lambda: controller.login(user_str1, passw_str1))
         button3.grid(column=1, row=3)
 
 # Register Page
@@ -155,32 +155,27 @@ class PageTwo(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        global user_str
-        global passw_str
-        global username1
-        global password1
-
-        create = Label(self, text="Create an Account",
+        create_label = Label(self, text="Create an Account",
                        font=('Arial', '10', 'bold'))
-        create.grid(column=1, row=0)
+        create_label.grid(column=1, row=0)
 
-        user1 = Label(self, text="Username")
-        user1.grid(column=0, row=1, padx=10, pady=10)
+        username_label = Label(self, text="Username")
+        username_label.grid(column=0, row=1, padx=10, pady=10)
 
-        passw1 = Label(self, text="Password")
-        passw1.grid(column=0, row=2, padx=10, pady=10)
+        password_label = Label(self, text="Password")
+        password_label.grid(column=0, row=2, padx=10, pady=10)
 
         user_str = StringVar()
-        username1 = Entry(self, textvariable=user_str)
-        username1.grid(column=1, row=1)
+        username_field = Entry(self, textvariable=user_str)
+        username_field.grid(column=1, row=1)
 
         passw_str = StringVar()
-        password1 = Entry(self, show="*", textvariable=passw_str)
-        password1.grid(column=1, row=2)
+        password_field = Entry(self, show="*", textvariable=passw_str)
+        password_field.grid(column=1, row=2)
 
-        button4 = Button(self, text="Register", command=lambda: controller.register(
-            SucReg, user_str, passw_str))
-        button4.grid(column=1, row=3)
+        register_button = Button(self, text="Register",
+                         command=lambda: controller.register(user_str, passw_str, username_field, password_field))
+        register_button.grid(column=1, row=3)
 
 # Succesful Register frame
 
