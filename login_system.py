@@ -1,16 +1,16 @@
 #Created by Ayotomiwa Adekunle
 
-import tkinter as tk
+from tkinter import Frame, Tk, Label, Button, StringVar, Entry
 
-class App(tk.Tk):
+class App(Tk):
     def __init__(self, *args, **kwargs):
-        tk.Tk.__init__(self, *args, **kwargs)
-        tk.Tk.title(self, "Login System")
-        tk.Tk.geometry(self, "300x150")
-        tk.Tk.maxsize(self, 300, 150)
+        Tk.__init__(self, *args, **kwargs)
+        Tk.title(self, "Login System")
+        Tk.geometry(self, "300x150")
+        Tk.maxsize(self, 300, 150)
 
 
-        container = tk.Frame(self)
+        container = Frame(self)
         container.pack(side="top", fill="both", expand=True)
 
         container.grid_rowconfigure(0, weight=1)
@@ -42,13 +42,13 @@ class App(tk.Tk):
                 password1.delete(0, "end")
                 self.show_frame(SucReg)
             else:
-                invalid = tk.Tk()
+                invalid = Tk()
                 invalid.title("Error")
 
-                error_label = tk.Label(invalid, text="Invalid username/password", font=("Arial", "10", "bold"))
+                error_label = Label(invalid, text="Invalid username/password", font=("Arial", "10", "bold"))
                 error_label.grid(row=0, column=0, padx=10, pady=10)
 
-                button_close = tk.Button(invalid, text="OK", command= lambda: invalid.destroy())
+                button_close = Button(invalid, text="OK", command= lambda: invalid.destroy())
                 button_close.grid(row=1, column=0, padx=10, pady=10)
 
                 invalid.mainloop()   
@@ -73,121 +73,121 @@ class App(tk.Tk):
             password.delete(0, "end")
             self.show_frame(SucLog)
         else:
-            error1 = tk.Tk()
+            error1 = Tk()
             error1.title("Error")
 
-            text = tk.Label(error1, text="Wrong username/password", font=("Arial", "10", "bold"))
+            text = Label(error1, text="Wrong username/password", font=("Arial", "10", "bold"))
             text.grid(row=0, column=0, padx=10, pady=10)
 
-            button_error = tk.Button(error1, text="OK", command=lambda: error1.destroy())
+            button_error = Button(error1, text="OK", command=lambda: error1.destroy())
             button_error.grid(row=1, column=0, padx=10, pady=10)
 
 
             error1.mainloop()
         
 
-class StartPage(tk.Frame):
+class StartPage(Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        Frame.__init__(self, parent)
 
-        label = tk.Label(self, text="Created by Ayotomiwa Adekunle", font=('Arial', '10', 'bold'))
+        label = Label(self, text="Created by Ayotomiwa Adekunle", font=('Arial', '10', 'bold'))
         label.pack()
 
-        button1 = tk.Button(self, text="Login", width=20, height=1, command=lambda: controller.show_frame(PageOne))
+        button1 = Button(self, text="Login", width=20, height=1, command=lambda: controller.show_frame(PageOne))
         button1.pack(padx=10, pady=20)
 
 
-        button2 = tk.Button(self, text="Register", width=20, height=1, command=lambda: controller.show_frame(PageTwo))
+        button2 = Button(self, text="Register", width=20, height=1, command=lambda: controller.show_frame(PageTwo))
         button2.pack(padx=10, pady=10)
 
 #Login Page
-class PageOne(tk.Frame):
+class PageOne(Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        Frame.__init__(self, parent)
 
         global username
         global password
         global user_str1
         global passw_str1
 
-        log = tk.Label(self, text="Login", font=('Arial', '10', 'bold')) 
+        log = Label(self, text="Login", font=('Arial', '10', 'bold')) 
         log.grid(column=1, row=0)
 
-        user = tk.Label(self, text="Username")
+        user = Label(self, text="Username")
         user.grid(column=0, row=1, padx=10, pady=10)
 
-        passw = tk.Label(self, text="Password")
+        passw = Label(self, text="Password")
         passw.grid(column=0, row=2, padx=10, pady=10)
 
-        user_str1 = tk.StringVar()
-        username = tk.Entry(self, textvariable = user_str1)
+        user_str1 = StringVar()
+        username = Entry(self, textvariable = user_str1)
         username.grid(column=1, row=1)
 
-        passw_str1 = tk.StringVar()
-        password = tk.Entry(self, show="*", textvariable = passw_str1)
+        passw_str1 = StringVar()
+        password = Entry(self, show="*", textvariable = passw_str1)
         password.grid(column=1, row=2)
 
 
-        button3 = tk.Button(self, text="Login", command=lambda: controller.login(SucLog, user_str1, passw_str1))
+        button3 = Button(self, text="Login", command=lambda: controller.login(SucLog, user_str1, passw_str1))
         button3.grid(column=1, row=3)
         
 #Register Page
-class PageTwo(tk.Frame):
+class PageTwo(Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        Frame.__init__(self, parent)
 
         global user_str
         global passw_str
         global username1
         global password1
 
-        create = tk.Label(self, text="Create an Account", font=('Arial', '10', 'bold')) 
+        create = Label(self, text="Create an Account", font=('Arial', '10', 'bold')) 
         create.grid(column=1, row=0)
   
-        user1 = tk.Label(self, text="Username")
+        user1 = Label(self, text="Username")
         user1.grid(column=0, row=1, padx=10, pady=10)
 
-        passw1 = tk.Label(self, text="Password")
+        passw1 = Label(self, text="Password")
         passw1.grid(column=0, row=2, padx=10, pady=10)
 
-        user_str = tk.StringVar()
-        username1 = tk.Entry(self, textvariable = user_str)
+        user_str = StringVar()
+        username1 = Entry(self, textvariable = user_str)
         username1.grid(column=1, row=1)
 
-        passw_str = tk.StringVar()
-        password1 = tk.Entry(self, show="*", textvariable = passw_str)
+        passw_str = StringVar()
+        password1 = Entry(self, show="*", textvariable = passw_str)
         password1.grid(column=1, row=2)
 
-        button4 = tk.Button(self, text="Register", command=lambda: controller.register(SucReg, user_str, passw_str))
+        button4 = Button(self, text="Register", command=lambda: controller.register(SucReg, user_str, passw_str))
         button4.grid(column=1, row=3)
         
 #Succesful Register frame
-class SucReg(tk.Frame):
+class SucReg(Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        Frame.__init__(self, parent)
 
-        reg_success = tk.Label(self, text="Succesful Registration", font=('Arial', '10', 'bold'))
+        reg_success = Label(self, text="Succesful Registration", font=('Arial', '10', 'bold'))
         reg_success.pack()
 
-        button1 = tk.Button(self, text="Login", width=20, height=1,  command=lambda: controller.show_frame(PageOne))
+        button1 = Button(self, text="Login", width=20, height=1,  command=lambda: controller.show_frame(PageOne))
         button1.pack(padx=10, pady=20)
 
-        button2 = tk.Button(self, text="Register", width=20, height=1,  command=lambda: controller.show_frame(PageTwo))
+        button2 = Button(self, text="Register", width=20, height=1,  command=lambda: controller.show_frame(PageTwo))
         button2.pack(padx=10, pady=10)
 
 #Succesful Login frame
-class SucLog(tk.Frame):
+class SucLog(Frame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        Frame.__init__(self, parent)
 
 
-        reg_success = tk.Label(self, text="Succesful Login", font=('Arial', '10', 'bold'))
+        reg_success = Label(self, text="Succesful Login", font=('Arial', '10', 'bold'))
         reg_success.pack()
 
-        button1 = tk.Button(self, text="Login", width=20, height=1,  command=lambda: controller.show_frame(PageOne))
+        button1 = Button(self, text="Login", width=20, height=1,  command=lambda: controller.show_frame(PageOne))
         button1.pack(padx=10, pady=20)
 
-        button2 = tk.Button(self, text="Register", width=20, height=1,  command=lambda: controller.show_frame(PageTwo))
+        button2 = Button(self, text="Register", width=20, height=1,  command=lambda: controller.show_frame(PageTwo))
         button2.pack(padx=10, pady=10)
 
 app = App()
