@@ -71,32 +71,28 @@ class App(Tk):
     def login(self, username, password, uname_field, passw_field):
         self.username = username.get()
         self.password = password.get()
-        success = 0
 
         # File is read and each line is made into a list which is looped through
         with open("Account_info.txt", "r") as file:
             for line in file:
                 split = line.strip().split(",")
                 if self.username == split[0] and self.password == split[1]:
-                    success += 1
+                    uname_field.delete(0, "end")
+                    passw_field.delete(0, "end")
+                    self.show_frame(SucLog)
+                    return
+        
+        # Error window
+        error1 = Tk()
+        error1.title("Error")
 
-        if success == 1:
-            uname_field.delete(0, "end")
-            passw_field.delete(0, "end")
-            self.show_frame(SucLog)
-        else:
-            error1 = Tk()
-            error1.title("Error")
+        text = Label(error1, text="Wrong username/password",font=("Arial", "10", "bold"))
+        text.grid(row=0, column=0, padx=10, pady=10)
 
-            text = Label(error1, text="Wrong username/password",
-                         font=("Arial", "10", "bold"))
-            text.grid(row=0, column=0, padx=10, pady=10)
+        button_error = Button(error1, text="OK", command=lambda: error1.destroy())
+        button_error.grid(row=1, column=0, padx=10, pady=10)
 
-            button_error = Button(
-                error1, text="OK", command=lambda: error1.destroy())
-            button_error.grid(row=1, column=0, padx=10, pady=10)
-
-            error1.mainloop()
+        error1.mainloop()
 
 
 class StartPage(Frame):
