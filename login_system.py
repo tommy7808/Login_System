@@ -33,7 +33,7 @@ class App(Tk):
         frame.tkraise()
 
     # Register function
-    def register(self, username, password, uname_field, pass_field):
+    def register(self, username, password, uname_field, passw_field):
         # Get username and password from fields
         self.username = username.get()
         self.password = password.get()
@@ -44,7 +44,7 @@ class App(Tk):
 
                 # Clear fields
                 uname_field.delete(0, "end")
-                pass_field.delete(0, "end")
+                passw_field.delete(0, "end")
 
                 # Show Successful Registration Frame
                 self.show_frame(SucReg)
@@ -68,21 +68,21 @@ class App(Tk):
                 invalid.mainloop()
 
     # Login function
-    def login(self, username1, password1):
-        self.username1 = user_str1.get()
-        self.password1 = passw_str1.get()
+    def login(self, username, password, uname_field, passw_field):
+        self.username = username.get()
+        self.password = password.get()
         success = 0
 
         # File is read and each line is made into a list which is looped through
         with open("Account_info.txt", "r") as file:
             for line in file:
                 split = line.strip().split(",")
-                if self.username1 == split[0] and self.password1 == split[1]:
+                if self.username == split[0] and self.password == split[1]:
                     success += 1
 
         if success == 1:
-            username.delete(0, "end")
-            password.delete(0, "end")
+            uname_field.delete(0, "end")
+            passw_field.delete(0, "end")
             self.show_frame(SucLog)
         else:
             error1 = Tk()
@@ -103,17 +103,17 @@ class StartPage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        label = Label(self, text="Created by Ayotomiwa Adekunle",
-                      font=('Arial', '10', 'bold'))
-        label.pack()
+        author_label = Label(self, text="Created by Ayotomiwa Adekunle",
+                             font=('Arial', '10', 'bold'))
+        author_label.pack()
 
-        button1 = Button(self, text="Login", width=20, height=1,
-                         command=lambda: controller.show_frame(PageOne))
-        button1.pack(padx=10, pady=20)
+        login_button = Button(self, text="Login", width=20, height=1,
+                              command=lambda: controller.show_frame(PageOne))
+        login_button.pack(padx=10, pady=20)
 
-        button2 = Button(self, text="Register", width=20, height=1,
-                         command=lambda: controller.show_frame(PageTwo))
-        button2.pack(padx=10, pady=10)
+        register_button = Button(self, text="Register", width=20, height=1,
+                                 command=lambda: controller.show_frame(PageTwo))
+        register_button.pack(padx=10, pady=10)
 
 # Login Page
 
@@ -122,31 +122,26 @@ class PageOne(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        global username
-        global password
-        global user_str1
-        global passw_str1
+        login_label = Label(self, text="Login", font=('Arial', '10', 'bold'))
+        login_label.grid(column=1, row=0)
 
-        log = Label(self, text="Login", font=('Arial', '10', 'bold'))
-        log.grid(column=1, row=0)
+        username_label = Label(self, text="Username")
+        username_label.grid(column=0, row=1, padx=10, pady=10)
 
-        user = Label(self, text="Username")
-        user.grid(column=0, row=1, padx=10, pady=10)
+        password_label = Label(self, text="Password")
+        password_label.grid(column=0, row=2, padx=10, pady=10)
 
-        passw = Label(self, text="Password")
-        passw.grid(column=0, row=2, padx=10, pady=10)
+        user_str = StringVar()
+        username_field = Entry(self, textvariable=user_str)
+        username_field.grid(column=1, row=1)
 
-        user_str1 = StringVar()
-        username = Entry(self, textvariable=user_str1)
-        username.grid(column=1, row=1)
+        passw_str = StringVar()
+        password_field = Entry(self, show="*", textvariable=passw_str)
+        password_field.grid(column=1, row=2)
 
-        passw_str1 = StringVar()
-        password = Entry(self, show="*", textvariable=passw_str1)
-        password.grid(column=1, row=2)
-
-        button3 = Button(
-            self, text="Login", command=lambda: controller.login(user_str1, passw_str1))
-        button3.grid(column=1, row=3)
+        login_button = Button(
+            self, text="Login", command=lambda: controller.login(user_str, passw_str, username_field, password_field))
+        login_button.grid(column=1, row=3)
 
 # Register Page
 
@@ -156,7 +151,7 @@ class PageTwo(Frame):
         Frame.__init__(self, parent)
 
         create_label = Label(self, text="Create an Account",
-                       font=('Arial', '10', 'bold'))
+                             font=('Arial', '10', 'bold'))
         create_label.grid(column=1, row=0)
 
         username_label = Label(self, text="Username")
@@ -174,7 +169,7 @@ class PageTwo(Frame):
         password_field.grid(column=1, row=2)
 
         register_button = Button(self, text="Register",
-                         command=lambda: controller.register(user_str, passw_str, username_field, password_field))
+                                 command=lambda: controller.register(user_str, passw_str, username_field, password_field))
         register_button.grid(column=1, row=3)
 
 # Succesful Register frame
@@ -184,17 +179,17 @@ class SucReg(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        reg_success = Label(self, text="Succesful Registration",
-                            font=('Arial', '10', 'bold'))
-        reg_success.pack()
+        success_label = Label(self, text="Succesful Registration",
+                              font=('Arial', '10', 'bold'))
+        success_label.pack()
 
-        button1 = Button(self, text="Login", width=20, height=1,
-                         command=lambda: controller.show_frame(PageOne))
-        button1.pack(padx=10, pady=20)
+        login_button = Button(self, text="Login", width=20, height=1,
+                              command=lambda: controller.show_frame(PageOne))
+        login_button.pack(padx=10, pady=20)
 
-        button2 = Button(self, text="Register", width=20, height=1,
-                         command=lambda: controller.show_frame(PageTwo))
-        button2.pack(padx=10, pady=10)
+        register_button = Button(self, text="Register", width=20, height=1,
+                                 command=lambda: controller.show_frame(PageTwo))
+        register_button.pack(padx=10, pady=10)
 
 # Succesful Login frame
 
@@ -203,17 +198,17 @@ class SucLog(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
-        reg_success = Label(self, text="Succesful Login",
-                            font=('Arial', '10', 'bold'))
-        reg_success.pack()
+        success_label = Label(self, text="Succesful Login",
+                              font=('Arial', '10', 'bold'))
+        success_label.pack()
 
-        button1 = Button(self, text="Login", width=20, height=1,
-                         command=lambda: controller.show_frame(PageOne))
-        button1.pack(padx=10, pady=20)
+        login_button = Button(self, text="Login", width=20, height=1,
+                              command=lambda: controller.show_frame(PageOne))
+        login_button.pack(padx=10, pady=20)
 
-        button2 = Button(self, text="Register", width=20, height=1,
-                         command=lambda: controller.show_frame(PageTwo))
-        button2.pack(padx=10, pady=10)
+        register_button = Button(self, text="Register", width=20, height=1,
+                                 command=lambda: controller.show_frame(PageTwo))
+        register_button.pack(padx=10, pady=10)
 
 
 app = App()
