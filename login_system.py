@@ -3,6 +3,7 @@
 from tkinter import Frame, Tk, Label, Button, StringVar, Entry
 
 import utils
+import bcrypt
 
 
 class App(Tk):
@@ -33,14 +34,18 @@ class App(Tk):
         frame.tkraise()
 
     # Register function
-    def register(self, username, password, uname_field, passw_field):
+    def register_user(self, username, password, uname_field, passw_field):
         # Get username and password from fields
-        self.username = username.get()
-        self.password = password.get()
+        username = username.get()
+        password = password.get()
 
         with open("Account_info.txt", "a") as file:
-            if utils.validate_register(self.username, self.password):
-                file.write(f'{self.username},{self.password}\n')
+            if utils.validate_register(username, password):
+                # Encrypt password
+                password = password.encode('utf-8')
+                hashed = bcrypt.hashpw(password, bcrypt.gensalt(10))
+
+                file.write(f'{username},{hashed}\n')
 
                 # Clear fields
                 uname_field.delete(0, "end")
@@ -69,27 +74,34 @@ class App(Tk):
 
     # Login function
     def login(self, username, password, uname_field, passw_field):
-        self.username = username.get()
-        self.password = password.get()
+        username = username.get()
+        password = password.get()
+
+        # Encrypt password
+        password = password.encode('utf-8')
+        hashed = bcrypt.hashpw(password, bcrypt.gensalt(10))
 
         # File is read and each line is made into a list which is looped through
         with open("Account_info.txt", "r") as file:
             for line in file:
                 split = line.strip().split(",")
-                if self.username == split[0] and self.password == split[1]:
+                # Check if username and password match username and password in 'Account_info.txt'
+                if username == split[0] and bcrypt.checkpw(password, hashed):
                     uname_field.delete(0, "end")
                     passw_field.delete(0, "end")
                     self.show_frame(SucLog)
                     return
-        
+
         # Error window
         error1 = Tk()
         error1.title("Error")
 
-        text = Label(error1, text="Wrong username/password",font=("Arial", "10", "bold"))
+        text = Label(error1, text="Wrong username/password",
+                     font=("Arial", "10", "bold"))
         text.grid(row=0, column=0, padx=10, pady=10)
 
-        button_error = Button(error1, text="OK", command=lambda: error1.destroy())
+        button_error = Button(
+            error1, text="OK", command=lambda: error1.destroy())
         button_error.grid(row=1, column=0, padx=10, pady=10)
 
         error1.mainloop()
@@ -165,7 +177,7 @@ class PageTwo(Frame):
         password_field.grid(column=1, row=2)
 
         register_button = Button(self, text="Register",
-                                 command=lambda: controller.register(user_str, passw_str, username_field, password_field))
+                                 command=lambda: controller.register_user(user_str, passw_str, username_field, password_field))
         register_button.grid(column=1, row=3)
 
 # Succesful Register frame
