@@ -42,8 +42,7 @@ class App(Tk):
         with open("Account_info.txt", "a") as file:
             if utils.validate_register(username, password):
                 # Encrypt password
-                password = password.encode('utf-8')
-                hashed = bcrypt.hashpw(password, bcrypt.gensalt(10))
+                hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(10)).decode('utf-8')
 
                 file.write(f'{username},{hashed}\n')
 
@@ -77,16 +76,12 @@ class App(Tk):
         username = username.get()
         password = password.get()
 
-        # Encrypt password
-        password = password.encode('utf-8')
-        hashed = bcrypt.hashpw(password, bcrypt.gensalt(10))
-
         # File is read and each line is made into a list which is looped through
         with open("Account_info.txt", "r") as file:
             for line in file:
                 split = line.strip().split(",")
                 # Check if username and password match username and password in 'Account_info.txt'
-                if username == split[0] and bcrypt.checkpw(password, hashed):
+                if username == split[0] and bcrypt.checkpw(password.encode('utf-8'), split[1].encode('utf-8')):
                     uname_field.delete(0, "end")
                     passw_field.delete(0, "end")
                     self.show_frame(SucLog)
