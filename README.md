@@ -6,6 +6,12 @@ This is a simple login system, where you can create an account using a username 
 Upon registration a file called '**Account_info.txt**' is created and the username and password are written to it.
 I created this application to apply the knowledge I've learnt in python.
 
+## How to install and run the app
+Run this command: ```pip3 install bcrypt```
+
+Start the app:```python3 login_system.py```
+
+
 ### Features
  - Username and password validation
  - Password encryption and decryption
